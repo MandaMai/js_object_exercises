@@ -40,7 +40,96 @@
     // Put your code here!
     ///////////////////////////
 
-    
+    // //how to create with class structure (ES6)
+    // class LivingThing {
+    //   constructor(monsterName, monsterHealth){
+    //     let name = monsterName;
+    //     let health= monsterHealth;
+    //   }
+    //   isAlive() {
+    //     return health > 0
+    //   }
+    // }
+    // class Hero extends LivingThing {
+    //   constructor(heroName, heroHealth){
+    //     super(heroName, heroHealth);
+    //   }
+    // }
+
+
+
+
+    function LivingThing(tempName, tempHealth){
+      let name=tempName;
+      let health=tempHealth;
+
+      this.isAlive=function(){
+        return (health > 0)
+      }
+
+      this.getName=function(){
+        return (name)
+      }
+
+      this.getHealth=function() {
+        return (health)
+      }
+      this.setHealth=function(tempValue){
+            health=tempValue;}
+
+
+    }
+
+    function Hero(heroName, heroHealth) {
+      LivingThing.call(this, heroName, heroHealth);
+
+      this.attack = function(enemy) {
+        //get random numbers for damage
+        let monsterDamage = getRandomIntInclusive(0,10);
+        let heroDamage = getRandomIntInclusive(0,10);
+        //console.log(monsterDamage);
+        //console.log(heroDamage);
+        //decrease health of the monster
+        enemy.setHealth(enemy.getHealth()-monsterDamage);
+        //decrease the health of the hero
+        this.setHealth(this.getHealth()-heroDamage);
+        console.log(this.getName() + " did " + monsterDamage + " points of damage to the monster to reduce its health to " + enemy.getHealth());
+        console.log(enemy.getName() + " did " + heroDamage + " points of damage to the hero to reduce its health to " + this.getHealth());
+      }
+
+      // * Give the Hero object another method named "fight" that takes as a parameter an array of LivingThing objects
+      // * and does the following:
+      // *  - For each LivingThing object in the array, call the "attack" method so the hero can attack the monster.
+      // *     - But, don't attack if the LivingThing is already dead!
+      // *  - Repeat the process until all the monsters or the hero is dead.
+      this.fight = function(arrayOfMonsters){
+        for(let i=0; i<arrayOfMonsters.length; i++) {
+          while(arrayOfMonsters[i].isAlive() && this.isAlive() === true) {
+            this.attack(arrayOfMonsters[i]);
+            if(!this.isAlive()){break;}
+            // console.log("monster is still alive: " + arrayOfMonsters[i].isAlive());
+            // console.log("hero is still alive: " + this.isAlive());
+          }//end while loop
+        }//end for loop
+  }//end fight
+
+}//end hero
+
+    function getRandomIntInclusive(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive
+    }
+
+    let Rat = new LivingThing("Rat", 5);
+    let Goblin = new LivingThing("Goblin", 30);
+    let Ogre = new LivingThing("Ogre", 80);
+    let hero = new Hero("Batman", 100);
+    let monsters=[Rat, Goblin, Ogre];
+
+
+
+
 
     //The code below should work when you are done
     console.log("A hero emerges!");
